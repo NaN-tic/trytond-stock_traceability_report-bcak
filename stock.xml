@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<tryton>
+    <data>
+        <!-- stock.traceability.report -->
+        <record model="ir.action.report" id="report_stock_traceability">
+            <field name="name">Traceability</field>
+            <field name="report_name">stock.traceability.report</field>
+            <field name="report">stock_traceability_report/report/stock_traceability_report.html</field>
+            <field name="template_extension">html</field>
+        </record>
+
+        <record model="ir.ui.view" id="print_stock_traceability_start_view_form">
+            <field name="model">stock.traceability.start</field>
+            <field name="type">form</field>
+            <field name="name">stock_traceability_start_form</field>
+        </record>
+
+        <record model="ir.action.wizard" id="print_stock_traceability">
+            <field name="name">Traceability</field>
+            <field name="wiz_name">stock.print_traceability</field>
+        </record>
+
+        <record model="ir.action.keyword" id="print_stock_traceability_product_keyword">
+            <field name="keyword">form_print</field>
+            <field name="model">product.template,-1</field>
+            <field name="action" ref="print_stock_traceability"/>
+        </record>
+    </data>
+
+    <data depends="stock_lot">
+        <record model="ir.action.keyword" id="print_stock_traceability_lot_keyword">
+            <field name="keyword">form_print</field>
+            <field name="model">stock.lot,-1</field>
+            <field name="action" ref="print_stock_traceability"/>
+        </record>
+    </data>
+</tryton>

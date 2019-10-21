@@ -1,0 +1,132 @@
+# Catalan translations for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-10-16 13:02+0200\n"
+"PO-Revision-Date: 2019-10-16 13:04+0200\n"
+"Last-Translator: \n"
+"Language: ca\n"
+"Language-Team: ca <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+"X-Generator: Poedit 1.8.11\n"
+
+#: _helpers.html:3 _helpers.html:18 _helpers.html:46 _helpers.html:74
+msgid "Origin"
+msgstr "Origen"
+
+#: _helpers.html:4
+msgid "Sale Line"
+msgstr "Líniea de venta"
+
+#: _helpers.html:5
+msgid "Purchase Line"
+msgstr "Línia de compra"
+
+#: _helpers.html:6 _helpers.html:33 _helpers.html:61 _helpers.html:81
+#: _helpers.html:87
+msgid "Move"
+msgstr "Moviment"
+
+#: _helpers.html:7
+msgid "Production"
+msgstr "Producció"
+
+#: _helpers.html:15 _helpers.html:43 _helpers.html:71
+#: stock_traceability_report.html:32
+msgid "Lot"
+msgstr "Lot"
+
+#: _helpers.html:16 _helpers.html:44 _helpers.html:72
+msgid "Quantity"
+msgstr "Quantitat"
+
+#: _helpers.html:17 _helpers.html:45 _helpers.html:73
+msgid "UdM"
+msgstr "UdM"
+
+#: _helpers.html:19 _helpers.html:47 _helpers.html:75
+msgid "Effective Date"
+msgstr "Data efectiva"
+
+#: _helpers.html:20 _helpers.html:48
+msgid "Warehouse"
+msgstr "Magatzem"
+
+#: _helpers.html:26 _helpers.html:54
+msgid "Lots"
+msgstr "Lots"
+
+#: stock_traceability_report.html:10 stock_traceability_report.html:16
+msgid "Traceability"
+msgstr "Tracebialitat"
+
+#: stock_traceability_report.html:19
+msgid "Expand All"
+msgstr "Amplia tot"
+
+#: stock_traceability_report.html:24
+msgid "From Date"
+msgstr "Des de la data"
+
+#: stock_traceability_report.html:25
+msgid "To Date"
+msgstr "Fins a la data"
+
+#: stock_traceability_report.html:31
+msgid "Product"
+msgstr "Producte"
+
+#: stock_traceability_report.html:37
+msgid "Initial Stock"
+msgstr "Stock inicial"
+
+#: stock_traceability_report.html:45
+msgid "Supplier Incomming"
+msgstr "Entrades proveïdor"
+
+#: stock_traceability_report.html:60
+msgid "Supplier Returns"
+msgstr "Devolucions proveïdor"
+
+#: stock_traceability_report.html:75
+msgid "Customer Outgoings"
+msgstr "Sortides client"
+
+#: stock_traceability_report.html:90
+msgid "Customer Returns"
+msgstr "Devolució client"
+
+#: stock_traceability_report.html:107
+msgid "Production Out"
+msgstr "Sortides producció"
+
+#: stock_traceability_report.html:122
+msgid "Production In"
+msgstr "Entrades producció"
+
+#: stock_traceability_report.html:138
+msgid "Inventory"
+msgstr "Inventari"
+
+#: stock_traceability_report.html:147
+msgid "From Lost & Found"
+msgstr "Des de perdut i trobat"
+
+#: stock_traceability_report.html:156
+msgid "To Lost & Found"
+msgstr "Fins a perdut i trobat"
+
+#~ msgid "From"
+#~ msgstr "Des de"
+
+#~ msgid "To"
+#~ msgstr "Fins a"

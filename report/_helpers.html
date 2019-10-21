@@ -1,0 +1,91 @@
+{% macro origin(record, parameters) %}
+  {% set origin=record.origin|string %}{% set model, id = origin.split(',') %}
+  {% set label = _('Origin') %}
+  {% if model == 'sale.line' %}{% set label = _('Sale Line') %}{% endif %}
+  {% if model == 'purhcase.line' %}{% set label = _('Purchase Line') %}{% endif %}
+  {% if model == 'stock.move' %}{% set label = _('Move') %}{% endif %}
+  {% if model == 'production' %}{% set label = _('Production') %}{% endif %}
+  <a href='{{ parameters['base_url'] }}/model/{{ model }}/{{ id }};name="{{ label }}"'>{{ record.origin.rec_name }}</a>
+{% endmacro %}
+
+{% macro draw_table_shipment(key, records, parameters) %}
+<table class="table collapse multi-collapse" id="{{ key }}">
+  <thead>
+    <tr>
+      {% if parameters.get('lot') %}<th scope="col">{{ _('Lot') }}</th>{% endif %}
+      <th scope="col">{{ _('Quantity') }}</th>
+      <th scope="col">{{ _('UdM') }}</th>
+      <th scope="col">{{ _('Origin') }}</th>
+      <th scope="col">{{ _('Effective Date') }}</th>
+      <th scope="col">{{ _('Warehouse') }}</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for record in records %}<tr>
+      {% if parameters.get('lot') %}<td>{% if record.lot %}<a href='{{ parameters['base_url'] }}/model/stock.lot/{{ record.id }};name="{{ _('Lots') }}"'>{{ record.lot and record.lot.number }}</a>{% endif %}</td>{% endif %}
+      <td>{{ record.quantity }}</td>
+      <td>{{ record.uom.rec_name }}</td>
+      <td>{% if record.origin %}{{ origin(record, parameters) }}{% endif %}
+      </td>
+      <td>{{ record.effective_date }}</td>
+      <td>{{ record.shipment and record.shipment.warehouse.rec_name }}</td>
+      <td><a href='{{ parameters['base_url'] }}/model/stock.move/{{ record.id }};name="{{ _('Move') }}"'><i class="fas fa-arrow-right"></i></a></td>
+    </tr>{% endfor %}
+  </tbody>
+</table>
+{% endmacro %}
+
+{% macro draw_table_production(key, in_out, records, parameters) %}
+<table class="table collapse multi-collapse" id="{{ key }}">
+  <thead>
+    <tr>
+      {% if parameters.get('lot') %}<th scope="col">{{ _('Lot') }}</th>{% endif %}
+      <th scope="col">{{ _('Quantity') }}</th>
+      <th scope="col">{{ _('UdM') }}</th>
+      <th scope="col">{{ _('Origin') }}</th>
+      <th scope="col">{{ _('Effective Date') }}</th>
+      <th scope="col">{{ _('Warehouse') }}</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for record in records %}<tr>{% set production=record|attr(in_out) %}
+      {% if parameters.get('lot') %}<td>{% if record.lot %}<a href='{{ parameters['base_url'] }}/model/stock.lot/{{ record.id }};name="{{ _('Lots') }}"'>{{ record.lot and record.lot.number }}</a>{% endif %}</td>{% endif %}
+      <td>{{ record.quantity }}</td>
+      <td>{{ record.uom.rec_name }}</td>
+      <td>{% if record.origin %}{{ origin(record, parameters) }}{% endif %}
+      </td>
+      <td>{{ record.effective_date }}</td>
+      <td>{{ production.warehouse.rec_name }}</td>
+      <td><a href='{{ parameters['base_url'] }}/model/stock.move/{{ record.id }};name="{{ _('Move') }}"'><i class="fas fa-arrow-right"></i></a></td>
+    </tr>{% endfor %}
+  </tbody>
+</table>
+{% endmacro %}
+
+{% macro draw_table(key, records, parameters) %}
+<table {% if key %}class="table collapse multi-collapse" id="{{ key }}"{% else %}class="table"{% endif %}>
+  <thead>
+    <tr>
+      {% if parameters.get('lot') %}<th scope="col">{{ _('Lot') }}</th>{% endif %}
+      <th scope="col">{{ _('Quantity') }}</th>
+      <th scope="col">{{ _('UdM') }}</th>
+      <th scope="col">{{ _('Origin') }}</th>
+      <th scope="col">{{ _('Effective Date') }}</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for record in records %}<tr>
+      {% if parameters.get('lot') %}<td>{% if record.lot %}<a href='{{ parameters['base_url'] }}/model/stock.lot/{{ record.id }};name="{{ _('Move') }}"'>{{ record.lot and record.lot.number }}</a>{% endif %}</td>{% endif %}
+      <td>{{ record.quantity }}</td>
+      <td>{{ record.uom.rec_name }}</td>
+      <td>{% if record.origin %}{{ origin(record, parameters) }}{% endif %}
+      </td>
+      <td>{{ record.effective_date }}</td>
+      <td><a href='{{ parameters['base_url'] }}/model/stock.move/{{ record.id }};name="{{ _('Move') }}"'><i class="fas fa-arrow-right"></i></a></td>
+    </tr>{% endfor %}
+  </tbody>
+</table>
+{% endmacro %}
