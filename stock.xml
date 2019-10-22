@@ -8,7 +8,8 @@
             <field name="name">Traceability</field>
             <field name="report_name">stock.traceability.report</field>
             <field name="report">stock_traceability_report/report/stock_traceability_report.html</field>
-            <field name="template_extension">html</field>
+            <field name="extension">html</field>
+            <field name="template_extension">jinja</field>
         </record>
 
         <record model="ir.ui.view" id="print_stock_traceability_start_view_form">
