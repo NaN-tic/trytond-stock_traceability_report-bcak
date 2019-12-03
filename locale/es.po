@@ -14,11 +14,11 @@ msgctxt "field:stock.traceability.start,to_date:"
 msgid "To Date"
 msgstr "Hasta"
 
-msgctxt "model:ir.action,name:print_stock_traceability_lot"
+msgctxt "model:ir.action,name:"
 msgid "Traceability"
 msgstr "Trazabilidad"
 
-msgctxt "model:ir.action,name:print_stock_traceability_product"
+msgctxt "model:ir.action,name:print_stock_traceability"
 msgid "Traceability"
 msgstr "Trazabilidad"
 
