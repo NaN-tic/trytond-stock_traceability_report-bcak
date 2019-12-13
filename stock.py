@@ -3,7 +3,6 @@
 import os
 from datetime import datetime
 from sql.aggregate import Sum
-from sql.operators import And
 from trytond.config import config
 from trytond.model import fields, ModelView
 from trytond.pool import Pool
@@ -75,7 +74,6 @@ class PrintStockTraceabilitySReport(HTMLReport):
         Product = pool.get('product.product')
         Move = pool.get('stock.move')
         Location = pool.get('stock.location')
-        Data = pool.get('ir.model.data')
 
         try:
             Production = pool.get('production')
@@ -115,27 +113,15 @@ class PrintStockTraceabilitySReport(HTMLReport):
         warehouses = Location.search([
             ('type', '=', 'warehouse')
             ])
-        locs =  [
-            'location_supplier',
-            'location_customer',
-            'location_lost_found',
-            'location_production',
-            ]
-        loc_data = Data.search([
-            ('module', 'in', ['stock', 'production']),
-            ('fs_id', 'in', locs),
-            ('model', '=', 'stock.location'),
-            ])
-        locs_data = dict((l.fs_id, l) for l in loc_data)
-        location_supplier = Location(locs_data.get(
-            'location_supplier').db_id)
-        location_customer  = Location(locs_data.get(
-            'location_customer').db_id)
-        location_lost_found = Location(locs_data.get(
-            'location_lost_found').db_id)
+        location_suppliers = [l.id for l in Location.search(
+            [('type', '=', 'supplier')])]
+        location_customers = [l.id for l in Location.search([
+            ('type', '=', 'customer')])]
+        location_lost_founds = [l.id for l in Location.search([
+            ('type', '=', 'lost_found')])]
         if Production:
-            location_production = Location(locs_data.get(
-                'location_production').db_id)
+            location_productions = [l.id for l in Location.search([
+                ('type', '=', 'production')])]
 
         keys = ()
         if data.get('model') == 'product.template':
@@ -184,7 +170,7 @@ class PrintStockTraceabilitySReport(HTMLReport):
             sql_where = ((move.product == product.id)
                 & (move.effective_date >= from_date) & (move.effective_date <= to_date)
                 & (move.state == 'done') & (move.company == company_id)
-                & (move.from_location == location_supplier.id))
+                & (move.from_location.in_(location_suppliers)))
             if lot:
                 sql_where.append((move.lot == lot.id))
             supplier_incommings_total, supplier_incommings = compute_quantites(sql_where)
@@ -193,7 +179,7 @@ class PrintStockTraceabilitySReport(HTMLReport):
             sql_where = ((move.product == product.id)
                 & (move.effective_date >= from_date) & (move.effective_date <= to_date)
                 & (move.state == 'done') & (move.company == company_id)
-                & (move.to_location == location_supplier.id))
+                & (move.to_location.in_(location_suppliers)))
             if lot:
                 sql_where.append((move.lot == lot.id))
             supplier_returns_total, supplier_returns = compute_quantites(sql_where)
@@ -202,7 +188,7 @@ class PrintStockTraceabilitySReport(HTMLReport):
             sql_where = ((move.product == product.id)
                 & (move.effective_date >= from_date) & (move.effective_date <= to_date)
                 & (move.state == 'done') & (move.company == company_id)
-                & (move.to_location == location_customer.id))
+                & (move.to_location.in_(location_customers)))
             if lot:
                 sql_where.append((move.lot == lot.id))
             customer_outgoings_total, customer_outgoings = compute_quantites(sql_where)
@@ -211,7 +197,7 @@ class PrintStockTraceabilitySReport(HTMLReport):
             sql_where = ((move.product == product.id)
                 & (move.effective_date >= from_date) & (move.effective_date <= to_date)
                 & (move.state == 'done') & (move.company == company_id)
-                & (move.from_location == location_customer.id))
+                & (move.from_location.in_(location_customers)))
             if lot:
                 sql_where.append((move.lot == lot.id))
             customer_returns_total, customer_returns = compute_quantites(sql_where)
@@ -221,7 +207,7 @@ class PrintStockTraceabilitySReport(HTMLReport):
                 sql_where = ((move.product == product.id)
                     & (move.effective_date >= from_date) & (move.effective_date <= to_date)
                     & (move.state == 'done') & (move.company == company_id)
-                    & (move.from_location == location_production.id))
+                    & (move.from_location.in_(location_productions)))
                 if lot:
                     sql_where.append((move.lot == lot.id))
                 production_outs_total, production_outs = compute_quantites(sql_where)
@@ -230,7 +216,7 @@ class PrintStockTraceabilitySReport(HTMLReport):
                 sql_where = ((move.product == product.id)
                     & (move.effective_date >= from_date) & (move.effective_date <= to_date)
                     & (move.state == 'done') & (move.company == company_id)
-                    & (move.to_location == location_production.id))
+                    & (move.to_location.in_(location_productions)))
                 if lot:
                     sql_where.append((move.lot == lot.id))
                 production_ins_total, production_ins = compute_quantites(sql_where)
@@ -239,7 +225,7 @@ class PrintStockTraceabilitySReport(HTMLReport):
             sql_where = ((move.product == product.id)
                 & (move.effective_date >= from_date) & (move.effective_date <= to_date)
                 & (move.state == 'done') & (move.company == company_id)
-                & (move.from_location == location_lost_found.id))
+                & (move.from_location.in_(location_lost_founds)))
             if lot:
                 sql_where.append((move.lot == lot.id))
             lost_found_from_total, lost_found_from = compute_quantites(sql_where)
@@ -247,7 +233,7 @@ class PrintStockTraceabilitySReport(HTMLReport):
             sql_where = ((move.product == product.id)
                 & (move.effective_date >= from_date) & (move.effective_date <= to_date)
                 & (move.state == 'done') & (move.company == company_id)
-                & (move.to_location == location_lost_found.id))
+                & (move.to_location.in_(location_lost_founds)))
             if lot:
                 sql_where.append((move.lot == lot.id))
             lost_found_to_total, lost_found_to = compute_quantites(sql_where)

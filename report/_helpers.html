@@ -23,7 +23,7 @@
   </thead>
   <tbody>
     {% for record in records %}<tr>
-      {% if parameters.get('lot') %}<td>{% if record.lot %}<a href='{{ parameters['base_url'] }}/model/stock.lot/{{ record.id }};name="{{ _('Lots') }}"'>{{ record.lot and record.lot.number }}</a>{% endif %}</td>{% endif %}
+      {% if parameters.get('lot') %}<td>{% if record.lot %}<a href='{{ parameters['base_url'] }}/model/stock.lot/{{ record.lot.id }};name="{{ _('Lots') }}"'>{{ record.lot.number }}</a>{% endif %}</td>{% endif %}
       <td>{{ record.quantity }}</td>
       <td>{{ record.uom.rec_name }}</td>
       <td>{% if record.origin %}{{ origin(record, parameters) }}{% endif %}
