@@ -159,7 +159,9 @@ class PrintStockTraceabilitySReport(HTMLReport):
             with Transaction().set_context(context):
                 pbl = Product.products_by_location(
                     [w.storage_location.id for w in warehouses],
-                    with_childs=False, grouping=grouping)
+                    with_childs=True,
+                    grouping_filter=([product.id],),
+                    grouping=grouping)
             for w in warehouses:
                 key = ((w.storage_location.id, product.id, lot.id)
                     if lot else (w.storage_location.id, product.id))
