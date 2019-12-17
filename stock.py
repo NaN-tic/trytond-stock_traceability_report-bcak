@@ -1,6 +1,7 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
 import os
+from decimal import Decimal
 from datetime import datetime
 from sql.aggregate import Sum
 from trytond.config import config
@@ -149,6 +150,7 @@ class PrintStockTraceabilitySReport(HTMLReport):
         for key in keys:
             product = key[0]
             lot = key[1]
+            digits = product.__class__.cost_price.digits
 
             # Initial stock
             initial_stock = 0
@@ -243,28 +245,33 @@ class PrintStockTraceabilitySReport(HTMLReport):
             records.append({
                 'product': product,
                 'lot': lot,
-                'initial_stock': initial_stock,
-                'supplier_incommings_total': supplier_incommings_total,
+                'initial_stock': Decimal(initial_stock).quantize(
+                    Decimal(str(10 ** -digits[1]))),
+                'supplier_incommings_total': Decimal(supplier_incommings_total).quantize(
+                    Decimal(str(10 ** -digits[1]))),
                 'supplier_incommings': supplier_incommings,
-                'supplier_return_total': (-supplier_returns_total
-                    if supplier_returns_total else 0),
+                'supplier_return_total': (-Decimal(supplier_returns_total).quantize(
+                    Decimal(str(10 ** -digits[1]))) if supplier_returns_total else 0),
                 'supplier_returns': supplier_returns,
-                'customer_outgoings_total': (-customer_outgoings_total
-                    if customer_outgoings_total else 0),
+                'customer_outgoings_total': (-Decimal(customer_outgoings_total).quantize(
+                    Decimal(str(10 ** -digits[1]))) if customer_outgoings_total else 0),
                 'customer_outgoings': customer_outgoings,
-                'customer_returns_total': customer_returns_total,
+                'customer_returns_total': Decimal(customer_returns_total).quantize(
+                    Decimal(str(10 ** -digits[1]))),
                 'customer_returns': customer_returns,
-                'production_outs_total': (-production_outs_total
-                    if Production else None),
+                'production_outs_total': (-Decimal(production_outs_total).quantize(
+                    Decimal(str(10 ** -digits[1]))) if Production else None),
                 'production_outs': production_outs if Production else None,
-                'production_ins_total': (production_ins_total
-                    if Production else None),
+                'production_ins_total': (Decimal(production_ins_total).quantize(
+                    Decimal(str(10 ** -digits[1]))) if Production else None),
                 'production_ins': production_ins if Production else None,
-                'lost_found_total': lost_found_from_total - lost_found_to_total,
-                'lost_found_from_total': lost_found_from_total,
+                'lost_found_total': Decimal(lost_found_from_total - lost_found_to_total).quantize(
+                    Decimal(str(10 ** -digits[1]))),
+                'lost_found_from_total': Decimal(lost_found_from_total).quantize(
+                    Decimal(str(10 ** -digits[1]))),
                 'lost_found_from': lost_found_from,
-                'lost_found_to_total': (-lost_found_to_total
-                    if lost_found_to_total else None),
+                'lost_found_to_total': (-Decimal(lost_found_to_total).quantize(
+                    Decimal(str(10 ** -digits[1]))) if lost_found_to_total else None),
                 'lost_found_to': lost_found_to,
                 })
         return records, parameters
