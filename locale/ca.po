@@ -10,6 +10,10 @@ msgctxt "field:stock.traceability.start,id:"
 msgid "ID"
 msgstr "ID"
 
+msgctxt "field:stock.traceability.start,locations:"
+msgid "Locations"
+msgstr "Ubicacions"
+
 msgctxt "field:stock.traceability.start,to_date:"
 msgid "To Date"
 msgstr "Fins"

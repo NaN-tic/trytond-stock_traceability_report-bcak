@@ -6,4 +6,7 @@
     <field name="from_date"/>
     <label name="to_date"/>
     <field name="to_date"/>
+    <newline/>
+    <separator name="locations" colspan="4"/>
+    <field name="locations" colspan="4"/>
 </form>
