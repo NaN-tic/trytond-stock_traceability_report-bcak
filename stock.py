@@ -32,6 +32,10 @@ class PrintStockTraceabilityStart(ModelView):
         states={
             'required': Bool(Eval('from_date', False)),
         }, depends=['from_date'])
+    locations = fields.Many2Many('stock.location',
+        None, None, 'Locations', required=True, domain=[
+        ('type', '=', 'storage'),
+        ])
 
 
 class PrintStockTraceability(Wizard):
@@ -49,6 +53,7 @@ class PrintStockTraceability(Wizard):
         data = {
             'from_date': self.start.from_date,
             'to_date': self.start.to_date,
+            'locations': [l.id for l in self.start.locations],
             'model': context.get('active_model'),
             'ids': context.get('active_ids'),
             }
@@ -155,12 +160,9 @@ class PrintStockTraceabilitySReport(HTMLReport):
             # Initial stock
             initial_stock = 0
             context = {}
-            context['stock_date_start'] = from_date
-            if data.get('to_date'):
-                context['stock_date_end'] = data.get('to_date')
+            context['stock_date_end'] = from_date
             with Transaction().set_context(context):
-                pbl = Product.products_by_location(
-                    [w.storage_location.id for w in warehouses],
+                pbl = Product.products_by_location(data.get('locations', []),
                     with_childs=True,
                     grouping_filter=([product.id],),
                     grouping=grouping)
@@ -259,10 +261,10 @@ class PrintStockTraceabilitySReport(HTMLReport):
                 'customer_returns_total': Decimal(customer_returns_total).quantize(
                     Decimal(str(10 ** -digits[1]))),
                 'customer_returns': customer_returns,
-                'production_outs_total': (-Decimal(production_outs_total).quantize(
+                'production_outs_total': (Decimal(production_outs_total).quantize(
                     Decimal(str(10 ** -digits[1]))) if Production else None),
                 'production_outs': production_outs if Production else None,
-                'production_ins_total': (Decimal(production_ins_total).quantize(
+                'production_ins_total': (-Decimal(production_ins_total).quantize(
                     Decimal(str(10 ** -digits[1]))) if Production else None),
                 'production_ins': production_ins if Production else None,
                 'lost_found_total': Decimal(lost_found_from_total - lost_found_to_total).quantize(
