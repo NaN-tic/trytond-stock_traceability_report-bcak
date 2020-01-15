@@ -165,6 +165,14 @@
           </td>
         </tr>
 
+        <tr>
+          <td>{{ _('Total') }}</td>
+          <td>{{ record['supplier_incommings_total'] + record['supplier_return_total']
+                  + record['customer_outgoings_total'] + record['customer_returns_total']
+                  + record['production_outs_total'] + record['production_ins_total']
+                  + record['lost_found_total'] }}</td>
+        </tr>
+
         {% endfor %}
       </tbody>
     </table>
