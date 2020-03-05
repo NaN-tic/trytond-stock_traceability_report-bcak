@@ -10,7 +10,7 @@ from trytond.pool import Pool
 from trytond.pyson import Bool, Eval
 from trytond.wizard import Wizard, StateView, StateReport, Button
 from trytond.transaction import Transaction
-from trytond.modules.html_report.html_report import HTMLReport
+from trytond.report import Report
 
 
 __all__ = ['PrintStockTraceabilityStart', 'PrintStockTraceability',
@@ -58,7 +58,7 @@ class PrintStockTraceability(Wizard):
         return action, data
 
 
-class PrintStockTraceabilitySReport(HTMLReport):
+class PrintStockTraceabilitySReport(Report):
     __name__ = 'stock.traceability.report'
 
     @classmethod
